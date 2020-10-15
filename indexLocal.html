@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <script>
+        var isDisplayed = false;
+        var currentIndex = 0;
+        var prevIndex = 0;
+        var isPlaying = false;
+        var msgIndex = 0;
+        var isPanelOpen = false;
+
+        var msg = [
+            { small: "after all It's Your", big: "Birthday", bg:"#ff3333" },
+            { small: "As We Can't Be With You To", big: "Celebrate it", bg:"#66ff33" },
+            { small: "We want to make it Special", big: "So Here We Are", bg:"#ffd633" },
+            { small: "To tell you what", big: "We Think of You", bg:"#600080" },
+        ]
+
+        var userData = [
+            { name: "Advika Kamath", videoLoc: "Videos/advika.mp4", profilePic: "Profile/advika.jpg" },
+            { name: "Tanay Shenoy", videoLoc: "Videos/tanay.mp4", profilePic: "Profile/tanay.jpg" },
+            { name: "Zara Lobo", videoLoc: "Videos/zara.mp4", profilePic: "Profile/zara.jpg" },
+            { name: "Anish Kamath", videoLoc: "Videos/anish.mp4", profilePic: "Profile/anish.jpg" },
+            { name: "Tanishka Shenoy", videoLoc: "Videos/tanishka.mp4", profilePic: "Profile/tanishka.jpg" },
+            { name: "Saania Netravalkar", videoLoc: "Videos/saaniya.mp4", profilePic: "Profile/saaniya.jpg" },
+            { name: "Sonal Menon", videoLoc: "Videos/sonal.mp4", profilePic: "Profile/sonal.jpg" },
+            { name: "Leroy Fernandes", videoLoc: "Videos/leroy.mp4", profilePic: "Profile/leroy.jpg" },
+            // {name:"Rohaan Almeida", videoLoc:"Videos/rohaan.mp4", profilePic:"Profile/rohaan.jpg"},
+            { name: "Sanjana Netravalkar", videoLoc: "Videos/sanjana.mp4", profilePic: "Profile/sanjana.jpg" },
+            { name: "Sandeep", videoLoc: "Videos/sandeep.mp4", profilePic: "Profile/sanjana.jpg" },
+            { name: "Gretel Lobo", videoLoc: "Videos/gretel.mp4", profilePic: "Profile/gretel.jpg" },
+            { name: "Sudhir", videoLoc: "Videos/sudhir.mp4", profilePic: "Profile/sudhir.jpg" },
+            { name: "Sushma Shenoy", videoLoc: "Videos/sushma.mp4", profilePic: "Profile/sushma.jpg" },
+            { name: "Sangeeta Kamath", videoLoc: "Videos/sangeeta.mp4", profilePic: "Profile/sangeeta.jpeg" },
+            { name: "Sandeep Shenoy", videoLoc: "Videos/sandeepmam.mp4", profilePic: "Profile/sandeepMam.jpeg" },
+            { name: "Ajith Kamath", videoLoc: "Videos/ajith.mp4", profilePic: "Profile/ajith.jpg" },
+            { name: "Suparna Almeida", videoLoc: "Videos/mom.mp4", profilePic: "Profile/mom.jpg" },
+            { name: "Denzil Almeida", videoLoc: "Videos/dad.mp4", profilePic: "Profile/dad.jpg" },
+            { name: "Meryl Netravalka", videoLoc: "Videos/meryl.mp4", profilePic: "Profile/meryl.jpg" },
+            { name: "Sujay Netravalkar", videoLoc: "Videos/sujay.mp4", profilePic: "Profile/sujay.jpg" },
+            { name: "Jerome Lobo", videoLoc: "Videos/jerome.mp4", profilePic: "Profile/jerome.jpg" },
+            { name: "Mamoma", videoLoc: "Videos/mamoma.mp4", profilePic: "Profile/mamoma.jpg" },
+            { name: "Ajja", videoLoc: "Videos/ajja.mp4", profilePic: "Profile/ajja.jpg" },
+            { name: "Grandma", videoLoc: "Videos/grandma.mp4", profilePic: "Profile/grandma.jpg" },
+            { name: "Grandpa", videoLoc: "Videos/grandpa.mp4", profilePic: "Profile/grandpa.jpg" },
+
+
+        ];
+
+        function playAudio() {
+            document.getElementById('pop').src = "Assets/pause_circle_outline-24px.svg";
+            document.getElementById("audio-1").play();
+        }
+
+        function pauseAudio() {
+            document.getElementById('pop').src = "Assets/play_circle_outline-24px.svg";
+            document.getElementById("audio-1").pause();
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                pauseAudio()
+            }
+            else {
+                playAudio()
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function nextStory() {
+            console.log("nextstory", prevIndex, currentIndex)
+
+            if (currentIndex + 1 < userData.length) {
+                selectStory();
+                var vid = document.getElementById("video-1");
+                vid.src = userData[++currentIndex].videoLoc;
+                vid.play();
+            }
+            console.log("opacity", prevIndex, currentIndex)
+
+            document.getElementById("story-" + prevIndex).style.opacity = 0.3;
+            document.getElementById("story-img-" + (currentIndex)).style.border = "none";
+        }
+
+        function prevStory() {
+            console.log("prevstory", prevIndex, currentIndex)
+
+            if (currentIndex - 1 >= 0) {
+                selectPrevStory();
+                var vid = document.getElementById("video-1");
+                vid.src = userData[--currentIndex].videoLoc;
+                vid.play();
+            }
+            console.log("opacity", prevIndex, currentIndex)
+
+            document.getElementById("story-" + prevIndex).style.opacity = 0.3;
+            document.getElementById("story-img-" + (currentIndex)).style.border = "none";
+
+        }
+
+        function playSelectedStory(index) {
+            var vid = document.getElementById("video-1");
+            vid.src = userData[index].videoLoc;
+            vid.play();
+            document.getElementById("story-" + prevIndex).style.backgroundColor = "#ffffff";
+            document.getElementById("story-" + index).style.backgroundColor = "#f2f2f2";
+
+            prevIndex = currentIndex;
+
+            currentIndex = index;
+        }
+
+        function selectStory() {
+            console.log(prevIndex, currentIndex)
+
+            document.getElementById("story-" + prevIndex).style.backgroundColor = "#ffffff";
+            document.getElementById("story-" + (currentIndex+1)).style.backgroundColor = "#e6f7ff";
+
+            prevIndex = currentIndex;
+        }
+
+        function selectPrevStory() {
+            console.log(prevIndex, currentIndex)
+
+            document.getElementById("story-" + prevIndex).style.backgroundColor = "#ffffff";
+            document.getElementById("story-" + (currentIndex-1)).style.backgroundColor = "#e6f7ff";
+
+            prevIndex = currentIndex;
+        }
+
+        function dispAudioInfo() {
+            if (isDisplayed) {
+                document.getElementById('music-info').style.display = "none";
+            }
+            else {
+                document.getElementById('music-info').style.display = "block";
+            }
+            isDisplayed = !isDisplayed;
+        }
+
+        function createStory(index) {
+
+            var Name = document.createElement("h4");
+            Name.textContent = userData[index].name;
+            var Note = document.createElement("p");
+
+            var StoryInnerDiv = document.createElement("div");
+            StoryInnerDiv.classList.add("col");
+            StoryInnerDiv.appendChild(Name);
+            StoryInnerDiv.appendChild(Note);
+
+            var StoryImage = document.createElement("img");
+            StoryImage.id = "story-img-" + index;
+            StoryImage.src = userData[index].profilePic;
+
+            var StoryChild = document.createElement("div");
+            StoryChild.classList.add("story-child");
+            StoryChild.classList.add("row");
+
+            StoryChild.appendChild(StoryImage);
+            StoryChild.appendChild(StoryInnerDiv);
+
+            var story = document.createElement("div");
+            story.addEventListener("click", Element => playSelectedStory(index));
+            story.id = "story-" + index;
+            story.classList.add("story");
+
+            story.appendChild(StoryChild);
+
+            document.getElementById("stories-container").appendChild(story);
+        }
+
+        function setMsg() {
+            if (!isPlaying) {
+                playAudio();
+                isPlaying = true;
+            }
+
+            if (msgIndex < msg.length) {
+                document.getElementById('small-msg').textContent = msg[msgIndex].small;
+                document.getElementById('big-msg').textContent = msg[msgIndex].big;
+                document.getElementById('bday-msg').style.backgroundColor = msg[msgIndex].bg;
+
+                msgIndex++;
+            }
+            else {
+                var video = document.getElementById("video-1");
+                video.src = userData[0].videoLoc;
+                video.play();
+
+                document.getElementById('bday-msg').style.display = "none";
+            }
+        }
+
+        function OpenPanel(){
+            if(!isPanelOpen){
+                document.getElementById('music-container').style.width = "70%";
+                document.getElementById('middle-tab').style.display = "block";
+                document.getElementById('right-tab').style.width = "70%";
+                document.getElementById('more-button').style.left = "23%";
+                document.getElementById('bottom-options-container').style.bottom = "130px";
+            }
+            else {
+                document.getElementById('music-container').style.width = "100%";
+                document.getElementById('middle-tab').style.display = "none";
+                document.getElementById('right-tab').style.width = "100%";
+                document.getElementById('more-button').style.left = "5%";
+                document.getElementById('bottom-options-container').style.bottom = "15px";
+            }
+
+            isPanelOpen = !isPanelOpen;
+        }
+    </script>
+</head>
+
+<body>
+    <!-- <div class="my-msg">
+            Hello World
+        </div> -->
+    <div id="bday-msg" class="bday-msg col" onclick="setMsg()">
+        <h2 id="small-msg">Whats Life Without a little</h2>
+        <h1 id="big-msg">Music</h1>
+    </div>
+    <div id="more-button" class="more-button" onclick="OpenPanel()">
+        <img src="Assets/dehaze-24px.svg">
+    </div>
+    <div class="row">
+        <div class="col left-tab screen-height">
+            <!-- <div class="logo-container">
+                    <h2>BirthDAY Social</h2>
+                </div> -->
+
+            <div class="user-info row">
+                <img src="Profile/bday.jpg" />
+                <div class="col">
+                    <h4>Birthday</h4>
+                    <p>Web Designer</p>
+                </div>
+            </div>
+
+            <div class="activity-info row">
+                <div class="activity-info-child">
+                    <h5>Posts</h5>
+                    <p>27</p>
+                </div>
+                <div class="activity-info-child">
+                    <h5>Followers</h5>
+                    <p>24</p>
+                </div>
+                <div class="activity-info-child">
+                    <h5>Following</h5>
+                    <p>163</p>
+                </div>
+            </div>
+
+            <div class="utilities-container col">
+                <div id="util-1" class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/home-black-18dp.svg" />
+                        <h4>Feed</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/explore-black-18dp.svg" />
+                        <h4>Explore</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/timeline-24px.svg" />
+                        <h4>Trending</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/whatshot-24px.svg" />
+                        <h4>Whats hot</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/face-24px.svg" />
+                        <h4>People</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/notifications-24px.svg" />
+                        <h4>Notification</h4>
+                    </div>
+                </div>
+
+                <div class="utilities">
+                    <div class="utilities-child row">
+                        <img src="Assets/donut_small-24px.svg" />
+                        <h4>Stats</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="middle-tab" class="col middle-tab screen-height">
+            <div class="centered-container">
+                <div class="title-stories">
+                    <h2>Featured Stories</h2>
+                </div>
+
+                <div id="stories-container" class="story-container col">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="right-tab" class="col right-tab screen-height">
+            <div class="video-container">
+                <div id="next-prev" class="next-prev row">
+                    <div id="left-side" class="left-side" onclick="prevStory()">
+
+                    </div>
+
+                    <div id="right-side" class="right-side" onclick="nextStory()">
+
+                    </div>
+                </div>
+                <video id="video-1" muted="muted" onended="nextStory()">
+                    <source type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div id="bottom-options-container"class="bottom-options-container row">
+                    <img src="Assets/camera_alt-white-18dp.svg" />
+                    <div class="send-msg">
+                        Send Message
+                    </div>
+                    <img src="Assets/star_rate-white-18dp.svg" />
+                </div>
+
+            </div>
+
+            <div id="music-container" class="music-container">
+                <div class="music-button" onclick="dispAudioInfo()">
+                    <img src="Assets/music-icon.png">
+                </div>
+                <div id="music-info" class="music-info">
+                    <img id="pop" src="Assets/pause_circle_outline-24px.svg" onclick="toggleAudio()" />
+                    <div>
+                        <h3>Jawsh 685</h3>
+                        <p>LAXED(Siren)</p>
+                    </div>
+                    <audio id="audio-1" autoplay loop>
+                        <source src="Videos/laxed.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById('util-1').classList.add('selected-util');
+    for (var i = 0; i < userData.length; i++) {
+        createStory(i);
+    }
+    document.getElementById("story-0").style.backgroundColor = "#e6f7ff";
+    document.getElementById("story-img-0").style.border = "none";
+
+
+</script>
+
+</html>
